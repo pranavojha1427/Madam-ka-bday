@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <!-- Premium Aesthetics Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;800&family=Pacifico&family=Fredoka+One&family=Special+Elite&family=Caveat:wght@600&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Curtain Timer Overlay -->
+    <div id="curtain-overlay">
+        <div class="curtain-panel curtain-left"></div>
+        <div class="curtain-panel curtain-right"></div>
+        <div id="curtain-timer-container">
+            <h2 class="curtain-title" style="font-family: var(--font-hand); font-size: 3rem; margin-bottom: 20px;">Bas itna time wait karlooo, I loveeee youuu babuuuu....</h2>
+            <div id="curtain-timer" style="font-family: var(--font-main); font-size: 2.5rem; font-weight: bold; letter-spacing: 2px;">Loading...</div>
+        </div>
+    </div>
+    <!-- SVG Filters for Burn & Torn Paper -->
+    <svg style="width:0;height:0;position:absolute;">
+        <filter id="burn-filter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" id="turbulence" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" id="displacement" />
+            <feColorMatrix type="matrix" values="1 0 0 0 0   0 1 0 0 0   0 0 1 0 0  0 0 0 1 0" id="fire-color" />
+        </filter>
+        <filter id="torn-edge">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <div id="app">
+        <!-- Scene 1: The Countdown & Burn -->
+        <section id="scene-1" class="scene active-state">
+            <div id="countdown-number" class="big-number">0</div>
+        </section>
+
+        <!-- Scene 2: Balloons and Bubble Text -->
+        <section id="scene-2" class="scene hidden-state">
+            
+            <div id="balloon-container">
+                <!-- Glossy 3D-looking Balloons injected via JS -->
+            </div>
+
+            <div class="cake-container hidden-state" id="birthday-cake">
+                <div class="cake-3d">
+                    <div class="cake-tier bottom-tier"></div>
+                    <div class="cake-tier top-tier">
+                        <div class="candle" id="candle1"><div class="flame"></div></div>
+                        <div class="candle" id="candle2"><div class="flame"></div></div>
+                        <div class="candle" id="candle3"><div class="flame"></div></div>
+                        <div class="candle" id="candle4"><div class="flame"></div></div>
+                        <div class="candle" id="candle5"><div class="flame"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bubble-text-container">
+                <div class="bubble-word" style="animation-delay: 0.1s">Happpyyy</div>
+                <div class="bubble-word" style="animation-delay: 0.3s">Birthdayyyy</div>
+                <div class="bubble-word" style="animation-delay: 0.5s">myyyy</div>
+                <div class="bubble-word" style="animation-delay: 0.7s">darlingggg</div>
+                <div class="bubble-word" style="animation-delay: 0.9s">Shibiiiii</div>
+            </div>
+            
+            <button class="continue-btn dark-btn" id="to-scene-3" style="display: none;">Next Scene</button>
+        </section>
+
+        <!-- Scene 3: The Spiral Photo Frame (2D Plane) -->
+        <section id="scene-3" class="scene hidden-state">
+            <div class="spiral-text">
+                <div class="date-watermark">AUG 14</div>
+                <h1 class="spiral-heading">
+                    <span class="light">Happppppyyyy</span><br>
+                    <span class="bold">Birthdayyyyyy</span><br>
+                    <span class="gold">Meriii Darlinggg</span>
+                </h1>
+                <p class="spiral-sub">Buddhii hoo rahi hoo ab<br> Par still youu will always be the prettiest as usual</p>
+                <button class="continue-btn" id="to-scene-4" style="position: relative; margin-top: 40px; bottom: 0; right: 0;">Next Scene</button>
+            </div>
+            
+            <!-- 2D DOM Elements for the Spiral instead of Three.js -->
+            <div id="spiral-container">
+                <!-- Photos injected via JS -->
+            </div>
+        </section>
+
+        <!-- Scene 4: Cute Photo Board -->
+        <section id="scene-4" class="scene hidden-state">
+            <div class="cute-board">
+                <!-- Polaroids injected via JS -->
+            </div>
+            <button class="continue-btn" id="to-scene-5" style="border-color: #555; color: #555; background: rgba(255,255,255,0.7);">Open Your Letter</button>
+        </section>
+
+        <!-- Scene 5: The Love Letter (Vintage Pocket & Newsletter) -->
+        <section id="scene-5" class="scene hidden-state">
+            <div class="pocket-wrapper" id="envelope">
+                
+                <div class="pocket-back"></div>
+
+                <div class="newsletter-letter">
+                    <div class="newsletter-header">
+                        <div class="bow-icon">🎀</div>
+                        <h1 class="newsletter-title">Newsletter</h1>
+                        <div class="newsletter-meta">
+                            <span>14.08.2026</span>
+                            <span>♡</span>
+                            <span>Myyyy loveeee myyy hearttttt myy better halff hehehehehehe</span>
+                        </div>
+                    </div>
+                    <div class="newsletter-content">
+                        <h2 class="newsletter-greeting">Forr myyy cutieee bacchiiii,</h2>
+                        
+                        <div class="img-wrap-left">
+                            <img src="assets/sketch1.jpeg" class="newsletter-img img-left" alt="Memory 1">
+                        </div>
+                        
+                        <p>Huiiiiii meriii pyaariii Darlinggg meriii cutieee choco pieee. Sabsee pehleee bahuttt hii zadaa hampieeee birthdayyy babyyyyy bahutt zadaaa.... humeshaaa khushhh rahooo mera ashirvad hai tumkooo. Mainnn bahut pyaarr kartaa huu aur kartaa rahungaaa jiii. Mujhee zarur batanaa kaisaa lagaa yee chhota sa supreise tumkooo??? Kyaaa tumm un titliyon pe click karkee dekhiii kuchh messages tha sabme alag alag. hehehhehheheehh</p>
+                        
+                        <div class="img-wrap-right stamp-border">
+                            <img src="assets/sketch2.jpeg" class="newsletter-img img-right" alt="Memory 2">
+                        </div>
+                        
+                        <p>To be honest. Tumm mere liyee sab kuchh hoo babuuu aur mainn tumhe khush dekhnee ke liyee kuchh bhi karungaa jii. Yeee bas ek chhotaa sa gift meri taraf se tumhare liyee babuuu... Ek glowing rabbit aur ek special card jisme mera aur tumhara photo haiii same mere paas bhi hai ek aur haii wo tum khud dekhlenaa mere purse me hehehhehehehe bahut din se hai like 1 month.... Yee isiliye taakii jab kabhii main kuch dino ke liye dur rahuu too isse mujhe tum apne paas dekh paaogi jii. Ye website utnaa accha to nhi bana paaya jii par umeed karta huu tumhe psnd aaye. Happiestttttt birthdayyyyyy babyyyyyyyy myyy darloooo and welcomee to the 20th club hehheheheheheheh. I loveeeeeeeee youuuuuuuuu Bherrrrryyyyy bherrrrryyyyyy muchhhhhhh gudiaa raaniiii meriii paramm sundoriii Shibiiiiiiiii.....</p>
+                        
+                        <p class="letter-signature">Forever Yours</p>
+                    </div>
+                </div>
+
+                <div class="pocket-front">
+                    <div class="stamps-top">
+                        <span style="font-size: 2rem;">💌</span>
+                    </div>
+                    <h3 class="pocket-title">Loveeee letter for myy babyyy<br></h3>
+                    <p class="pocket-sub">this book shows how much<br>I loveeeee youuuu</p>
+                    <p class="pocket-footer">Cutieeeeee buchkuuuuuu</p>
+                    <div class="lip-mark">💋</div>
+                </div>
+
+                <div class="pocket-flap"></div>
+                <div class="pocket-wax-seal">
+                    <div class="seal-bow">🎀</div>
+                </div>
+
+            </div>
+            
+            <button class="continue-btn" id="to-scene-6" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); border-color: #555; color: #333; background: rgba(255,255,255,0.8); opacity: 0; pointer-events: none; transition: opacity 1s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Listen to our Playlist</button>
+        </section>
+
+        <!-- Scene 6: The Playlist -->
+        <section id="scene-6" class="scene hidden-state">
+            <div class="dj-system">
+                <h2 class="playlist-title" style="margin-bottom: 30px; color: #f7d547; text-align: center; text-shadow: 0 0 10px rgba(247,213,71,0.5);">Our Mixtape</h2>
+                
+                <div class="dj-deck">
+                    <div class="turntable">
+                        <div class="platter">
+                            <div class="record" id="vinyl-record">
+                                <div class="record-grooves"></div>
+                                <div class="record-label">
+                                    <span class="label-text">My darling's<br>Mix</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tonearm-base">
+                            <div class="tonearm" id="tonearm"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mixer">
+                        <div class="songs-list dj-tracks">
+                            <div class="song-item dj-track" data-src="assets/song1.mp3">
+                                <div class="track-info">1. O Maahi Ve</div>
+                                <button class="play-btn dj-btn">▶</button>
+                            </div>
+                            <div class="song-item dj-track" data-src="assets/song2.mp3">
+                                <div class="track-info">2. Tum Ho Toh</div>
+                                <button class="play-btn dj-btn">▶</button>
+                            </div>
+                            <div class="song-item dj-track" data-src="assets/song3.mp3">
+                                <div class="track-info">3. Mere Sohneya</div>
+                                <button class="play-btn dj-btn">▶</button>
+                            </div>
+                            <div class="song-item dj-track" data-src="assets/song4.mp3">
+                                <div class="track-info">4. Tumhare hi Rahenge</div>
+                                <button class="play-btn dj-btn">▶</button>
+                            </div>
+                            <div class="song-item dj-track" data-src="assets/song5.mp3">
+                                <div class="track-info">5. Khoobsurat</div>
+                                <button class="play-btn dj-btn">▶</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Global audio element -->
+                <audio id="global-audio"></audio>
+                <button class="continue-btn" id="to-scene-7" style="position: relative; margin-top: 40px; border-color: white; color: white; display: block; margin-left: auto; margin-right: auto;">Watch Our Video</button>
+            </div>
+        </section>
+
+        <!-- Scene 7: The Video -->
+        <section id="scene-7" class="scene hidden-state">
+            <div class="video-container">
+                <div class="tv-frame">
+                    <video id="memory-video" src="assets/video.mp4" controls controlsList="nodownload"></video>
+                </div>
+                <h3 style="margin-top: 30px; color: white; font-family: 'Special Elite', monospace;">Happppyyy Birthdayyyy myyy babuuuuu❤️</h3>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
