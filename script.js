@@ -45,6 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Secret Key to bypass curtain (Press 's')
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 's' && curtainOverlay && !curtainOverlay.classList.contains('open')) {
+            if (curtainTimer) curtainTimer.innerText = "00d 00h 00m 00s";
+            curtainOverlay.classList.add('open');
+            if (!hasScene1Started) {
+                hasScene1Started = true;
+                setTimeout(startScene1Countdown, 1000); // Start counting up as the curtains swing wide
+            }
+            setTimeout(() => {
+                curtainOverlay.style.display = 'none';
+            }, 2500); // Wait for transition to finish
+        }
+    });
+
     function transitionScene(fromId, toId) {
         document.getElementById(fromId).classList.replace('active-state', 'hidden-state');
         document.getElementById(toId).classList.replace('hidden-state', 'active-state');
