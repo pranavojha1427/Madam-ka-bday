@@ -45,20 +45,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Secret Key to bypass curtain (Press 's')
-    document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 's' && curtainOverlay && !curtainOverlay.classList.contains('open')) {
+    function bypassCurtain() {
+        if (curtainOverlay && !curtainOverlay.classList.contains('open')) {
             if (curtainTimer) curtainTimer.innerText = "00d 00h 00m 00s";
             curtainOverlay.classList.add('open');
             if (!hasScene1Started) {
                 hasScene1Started = true;
-                setTimeout(startScene1Countdown, 1000); // Start counting up as the curtains swing wide
+                setTimeout(startScene1Countdown, 1000);
             }
             setTimeout(() => {
                 curtainOverlay.style.display = 'none';
-            }, 2500); // Wait for transition to finish
+            }, 2500);
+        }
+    }
+
+    // Secret Key to bypass curtain (Press 's' or double Volume Down)
+    let volDownCount = 0;
+    let volDownTimeout = null;
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key.toLowerCase() === 's') { bypassCurtain(); }
+        
+        if (e.key === 'AudioVolumeDown' || e.key === 'VolumeDown') {
+            volDownCount++;
+            clearTimeout(volDownTimeout);
+            if (volDownCount === 2) {
+                bypassCurtain();
+                volDownCount = 0;
+            } else {
+                volDownTimeout = setTimeout(() => { volDownCount = 0; }, 2000);
+            }
         }
     });
+
+    // Foolproof Mobile Backup: Double tap the curtain text
+    const curtainTitle = document.querySelector('.curtain-title');
+    if (curtainTitle) {
+        let tapCount = 0;
+        let tapTimeout = null;
+        curtainTitle.addEventListener('touchstart', (e) => {
+            tapCount++;
+            clearTimeout(tapTimeout);
+            if (tapCount === 2) {
+                bypassCurtain();
+                tapCount = 0;
+            } else {
+                tapTimeout = setTimeout(() => { tapCount = 0; }, 1000);
+            }
+        });
+    }
 
     function transitionScene(fromId, toId) {
         document.getElementById(fromId).classList.replace('active-state', 'hidden-state');
