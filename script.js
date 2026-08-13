@@ -45,13 +45,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Secret bypass using hardware Volume Down double press
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "AudioVolumeDown" || e.code === "VolumeDown" || e.keyCode === 174) {
+            volumeDownCount++;
+            clearTimeout(volumeDownTimer);
+            if (volumeDownCount >= 2) {
+                bypassCurtain();
+                volumeDownCount = 0;
+            } else {
+                volumeDownTimer = setTimeout(() => { volumeDownCount = 0; }, 1000);
+            }
+        }
+    });
+
+    let clickCount = 0;
+    let clickTimer = null;
+    if (curtainTitle) {
+        curtainTitle.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            if (clickCount >= 2) {
+                bypassCurtain();
+                clickCount = 0;
+            } else {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+            }
+        });
+        curtainTitle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            clickCount++;
+            clearTimeout(clickTimer);
+            if (clickCount >= 2) {
+                bypassCurtain();
+                clickCount = 0;
+            } else {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
+            }
+        });
+    }
+
     function bypassCurtain() {
         if (curtainOverlay && !curtainOverlay.classList.contains('open')) {
-            // Attempt to enter fullscreen on mobile for a perfect cinematic experience
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen().catch(() => {});
             }
-
             if (curtainTimer) curtainTimer.innerText = "00d 00h 00m 00s";
             curtainOverlay.classList.add('open');
             if (!hasScene1Started) {
@@ -62,42 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 curtainOverlay.style.display = 'none';
             }, 2500);
         }
-    }
-
-    // Secret Key to bypass curtain (Press 's' or double Volume Down)
-    let volDownCount = 0;
-    let volDownTimeout = null;
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.key.toLowerCase() === 's') { bypassCurtain(); }
-        
-        if (e.key === 'AudioVolumeDown' || e.key === 'VolumeDown') {
-            volDownCount++;
-            clearTimeout(volDownTimeout);
-            if (volDownCount === 2) {
-                bypassCurtain();
-                volDownCount = 0;
-            } else {
-                volDownTimeout = setTimeout(() => { volDownCount = 0; }, 2000);
-            }
-        }
-    });
-
-    // Foolproof Mobile Backup: Double tap the curtain text
-    const curtainTitle = document.querySelector('.curtain-title');
-    if (curtainTitle) {
-        let tapCount = 0;
-        let tapTimeout = null;
-        curtainTitle.addEventListener('touchstart', (e) => {
-            tapCount++;
-            clearTimeout(tapTimeout);
-            if (tapCount === 2) {
-                bypassCurtain();
-                tapCount = 0;
-            } else {
-                tapTimeout = setTimeout(() => { tapCount = 0; }, 1000);
-            }
-        });
     }
 
     function transitionScene(fromId, toId) {
@@ -302,30 +304,27 @@ document.addEventListener('DOMContentLoaded', () => {
             let elapsed = (now - startTime) / 1000;
             
             const offsetX = window.innerWidth * 0.55;
-            const offsetY = window.innerHeight * 0.65; // Base of the straight line
+            const offsetY = window.innerHeight * 0.65;
             
-            // Separate dynamic scale factors
             let scaleX = Math.min(1, window.innerWidth / 1200);
             let scaleY = Math.min(1, window.innerHeight / 800);
             
             for (let i = 0; i < photoCount; i++) {
-                // Adjust speed and spacing significantly to attach head-to-tail and avoid clustering
+                // Wide spacing to attach head-to-tail seamlessly
                 let baseT = (elapsed * 0.12) - (i * 0.55); 
                 
-                // Wrap 't' between -12 and +12 to create a massive horizontal track
+                // Wrap 't' between -12 and +12 for a massive 24-unit track
                 let t = ((baseT % 24) + 24) % 24 - 12;
                 
-                // Cursive 'e' shape scaled independently to fit screen width
                 let x = (200 * t - 320 * Math.sin(t)) * scaleX;
                 let y = (-380 * Math.exp(-(t * t) / 2.5)) * scaleY; 
                 
-                // Derivatives for rotation tangent to the curve
                 let dx = 200 - 320 * Math.cos(t);
                 let dy = 380 * (2 * t / 2.5) * Math.exp(-(t * t) / 2.5);
                 let angle = Math.atan2(dy, dx) * (180 / Math.PI);
                 
                 photos[i].style.left = (offsetX + x - 66) + 'px'; // Center for 132px width
-                photos[i].style.top = (offsetY + y - 84) + 'px';  // Center for 168px height
+                photos[i].style.top = (offsetY + y - 84) + 'px'; // Center for 168px height
                 photos[i].style.transform = `rotate(${angle}deg)`;
                 
                 // Fade out edges smoothly so photos don't abruptly pop in/out

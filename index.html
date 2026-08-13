@@ -10,12 +10,10 @@
 </head>
 <body>
     <!-- Landscape Prompt for Mobile Portrait -->
-    <div id="landscape-prompt">
-        <div class="prompt-content">
-            <span style="font-size: 4rem; display: block; margin-bottom: 20px;">🔄📱</span>
-            <h2 style="font-family: var(--font-bubbly); font-weight: normal; margin-bottom: 10px;">Please Rotate Your Phone</h2>
-            <p style="font-size: 1.2rem; color: #ccc;">This surprise is designed specifically for landscape mode!</p>
-        </div>
+    <div id="landscape-prompt" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #222; color: white; z-index: 99999; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <span style="font-size: 4rem; margin-bottom: 20px;">🔄📱</span>
+        <h2 style="font-family: var(--font-bubbly); margin-bottom: 10px;">Please Rotate Your Phone</h2>
+        <p style="font-size: 1.2rem; color: #ccc; padding: 0 20px;">This surprise looks best in landscape mode!</p>
     </div>
     <!-- Curtain Timer Overlay -->
     <div id="curtain-overlay">
@@ -95,12 +93,11 @@
             </div>
         </section>
 
-        <!-- Scene 4: Interactive Polaroids Gallery -->
+        <!-- Scene 4: Cute Photo Board -->
         <section id="scene-4" class="scene hidden-state">
             <div class="cute-board">
                 <div class="butterfly-hint" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 16px; color: white; z-index: 1000; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); font-family: var(--font-main); text-align: center; pointer-events: none;">Catch the butterfly to reveal a secret message 🦋</div>
-                
-                <!-- Random scattered polaroids injected via JS -->
+                <!-- Polaroids injected via JS -->
             </div>
             <button class="continue-btn" id="to-scene-5" style="border-color: #555; color: #555; background: rgba(255,255,255,0.7);">Open Your Letter</button>
         </section>
