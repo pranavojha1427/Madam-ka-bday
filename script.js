@@ -309,11 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let scaleY = Math.min(1, window.innerHeight / 800);
             
             for (let i = 0; i < photoCount; i++) {
-                // Adjust speed and spacing for the new loop size
-                let baseT = (elapsed * 0.06) - (i * 0.22); 
+                // Adjust speed and spacing significantly to attach head-to-tail and avoid clustering
+                let baseT = (elapsed * 0.12) - (i * 0.55); 
                 
-                // Wrap 't' between -6 and +6 to cover the screen horizontally
-                let t = ((baseT % 12) + 12) % 12 - 6;
+                // Wrap 't' between -12 and +12 to create a massive horizontal track
+                let t = ((baseT % 24) + 24) % 24 - 12;
                 
                 // Cursive 'e' shape scaled independently to fit screen width
                 let x = (200 * t - 320 * Math.sin(t)) * scaleX;
