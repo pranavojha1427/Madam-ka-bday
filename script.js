@@ -47,6 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function bypassCurtain() {
         if (curtainOverlay && !curtainOverlay.classList.contains('open')) {
+            // Attempt to enter fullscreen on mobile for a perfect cinematic experience
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+
             if (curtainTimer) curtainTimer.innerText = "00d 00h 00m 00s";
             curtainOverlay.classList.add('open');
             if (!hasScene1Started) {
@@ -299,6 +304,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const offsetX = window.innerWidth * 0.55;
             const offsetY = window.innerHeight * 0.65; // Base of the straight line
             
+            // Dynamic scale factor for short mobile screens
+            let scale = Math.min(1, window.innerHeight / 800);
+            if (window.innerWidth < 950 && window.innerHeight < 450) {
+                scale = window.innerHeight / 900; 
+            }
+            
             for (let i = 0; i < photoCount; i++) {
                 // Adjust speed and spacing for the new loop size
                 let baseT = (elapsed * 0.06) - (i * 0.22); 
@@ -306,18 +317,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Wrap 't' between -6 and +6 to cover the screen horizontally
                 let t = ((baseT % 12) + 12) % 12 - 6;
                 
-                // Cursive 'e' shape: straight horizontal tails, loop in the middle
-                // We use a Gaussian pulse for Y to ensure the tails are perfectly flat (y=0)
-                let x = 200 * t - 320 * Math.sin(t);
-                let y = -380 * Math.exp(-(t * t) / 2.5); 
+                // Cursive 'e' shape scaled to screen
+                let x = (200 * t - 320 * Math.sin(t)) * scale;
+                let y = (-380 * Math.exp(-(t * t) / 2.5)) * scale; 
                 
                 // Derivatives for rotation tangent to the curve
                 let dx = 200 - 320 * Math.cos(t);
                 let dy = 380 * (2 * t / 2.5) * Math.exp(-(t * t) / 2.5);
                 let angle = Math.atan2(dy, dx) * (180 / Math.PI);
                 
-                photos[i].style.left = (offsetX + x - 55) + 'px'; 
-                photos[i].style.top = (offsetY + y - 55) + 'px';
+                photos[i].style.left = (offsetX + x - 66) + 'px'; // Center for 132px width
+                photos[i].style.top = (offsetY + y - 84) + 'px';  // Center for 168px height
                 photos[i].style.transform = `rotate(${angle}deg)`;
                 
                 // Fade out edges smoothly so photos don't abruptly pop in/out
