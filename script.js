@@ -304,11 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const offsetX = window.innerWidth * 0.55;
             const offsetY = window.innerHeight * 0.65; // Base of the straight line
             
-            // Dynamic scale factor for short mobile screens
-            let scale = Math.min(1, window.innerHeight / 800);
-            if (window.innerWidth < 950 && window.innerHeight < 450) {
-                scale = window.innerHeight / 900; 
-            }
+            // Separate dynamic scale factors
+            let scaleX = Math.min(1, window.innerWidth / 1200);
+            let scaleY = Math.min(1, window.innerHeight / 800);
             
             for (let i = 0; i < photoCount; i++) {
                 // Adjust speed and spacing for the new loop size
@@ -317,9 +315,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Wrap 't' between -6 and +6 to cover the screen horizontally
                 let t = ((baseT % 12) + 12) % 12 - 6;
                 
-                // Cursive 'e' shape scaled to screen
-                let x = (200 * t - 320 * Math.sin(t)) * scale;
-                let y = (-380 * Math.exp(-(t * t) / 2.5)) * scale; 
+                // Cursive 'e' shape scaled independently to fit screen width
+                let x = (200 * t - 320 * Math.sin(t)) * scaleX;
+                let y = (-380 * Math.exp(-(t * t) / 2.5)) * scaleY; 
                 
                 // Derivatives for rotation tangent to the curve
                 let dx = 200 - 320 * Math.cos(t);
