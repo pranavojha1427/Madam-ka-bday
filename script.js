@@ -3,9 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Curtain Overlay Logic ---
     const curtainOverlay = document.getElementById('curtain-overlay');
     const curtainTimer = document.getElementById('curtain-timer');
+    const curtainTitle = document.querySelector('.curtain-title'); // Added missing declaration
+    
     // Set target date to 14 August 2026, 00:00:00 (Midnight)
     const targetDate = new Date('2026-08-14T00:00:00').getTime();
     let hasScene1Started = false;
+    let volumeDownCount = 0; // Added missing declaration
+    let volumeDownTimer = null; // Added missing declaration
 
     function updateCurtain() {
         const now = new Date().getTime();
