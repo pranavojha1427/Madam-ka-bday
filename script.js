@@ -59,31 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    let clickCount = 0;
-    let clickTimer = null;
-    if (curtainTitle) {
-        curtainTitle.addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimer);
-            if (clickCount >= 2) {
-                bypassCurtain();
-                clickCount = 0;
-            } else {
-                clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
-            }
-        });
-        curtainTitle.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            clickCount++;
-            clearTimeout(clickTimer);
-            if (clickCount >= 2) {
-                bypassCurtain();
-                clickCount = 0;
-            } else {
-                clickTimer = setTimeout(() => { clickCount = 0; }, 1000);
-            }
-        });
-    }
+    // Volume Down is strictly the ONLY bypass method now
 
     function bypassCurtain() {
         if (curtainOverlay && !curtainOverlay.classList.contains('open')) {
