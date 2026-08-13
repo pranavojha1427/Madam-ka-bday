@@ -45,8 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Secret bypass using hardware Volume Down double press
+    // Secret bypass using 'S' key or hardware Volume Down double press
     document.addEventListener('keydown', (e) => {
+        // Desktop bypass: 's' key
+        if (e.key.toLowerCase() === 's') {
+            bypassCurtain();
+        }
+        
+        // Mobile bypass: Volume Down double press
         if (e.key === "AudioVolumeDown" || e.code === "VolumeDown" || e.keyCode === 174) {
             volumeDownCount++;
             clearTimeout(volumeDownTimer);
