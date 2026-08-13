@@ -1593,7 +1593,17 @@ video {
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
     /* Global & Overlays */
-    .continue-btn { bottom: 20px; right: 20px; padding: 10px 20px; font-size: 0.9rem; }
+    .continue-btn { 
+        position: absolute !important;
+        bottom: 15px !important; 
+        right: 15px !important; 
+        left: auto !important;
+        transform: none !important;
+        padding: 8px 16px !important; 
+        font-size: 0.9rem !important; 
+        margin: 0 !important;
+        z-index: 9999 !important;
+    }
     .curtain-title { font-size: 1.8rem !important; margin-bottom: 10px !important; padding: 0 15px; }
     #curtain-timer { font-size: 1.5rem !important; }
 
@@ -1710,22 +1720,43 @@ video {
         overflow-y: hidden !important; 
     }
     .newsletter-letter p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         line-height: 1.3;
+        margin-bottom: 8px;
+    }
+    
+    /* Override the cinematic pop to scale the letter down so the header isn't cut off */
+    @keyframes cinematicLetterReveal {
+        0% { transform: translateY(0) scale(1); z-index: 2; }
+        30% { transform: translateY(-450px) scale(1); z-index: 2; }
+        31% { z-index: 10; }
+        100% { transform: translateY(40px) scale(0.85); z-index: 10; box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
     }
 
-    /* Scene 6: Adjust Playlist for short screens */
+    /* Scene 6: Adjust Playlist tightly for short screens */
     .playlist-container {
-        transform: scale(0.7);
+        transform: scale(0.6);
         transform-origin: top center;
-        margin-top: 5vh;
+        margin-top: 3vh;
     }
+    .dj-track {
+        padding: 5px 15px !important;
+        margin-bottom: 5px !important;
+        min-height: 45px !important;
+    }
+    .song-title { font-size: 1rem; }
+    .album-art { width: 35px; height: 35px; }
     
     /* Reposition UI buttons for tight space */
     .continue-btn {
-        bottom: 10px;
-        right: 15px;
-        padding: 5px 15px;
-        font-size: 0.8rem;
+        position: absolute !important;
+        bottom: 10px !important;
+        right: 15px !important;
+        left: auto !important;
+        transform: none !important;
+        padding: 5px 15px !important;
+        font-size: 0.8rem !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
     }
 }
