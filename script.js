@@ -201,85 +201,22 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(b);
         }
 
-        // Show cake and activate mic after 2.5 seconds
+        // Show Next button after 2.5 seconds instead of the cake/microphone
         setTimeout(() => {
-            const cake = document.getElementById('birthday-cake');
-            if(cake) cake.classList.remove('hidden-state');
-            initMicrophone();
+            const nextBtn = document.getElementById('to-scene-3');
+            if (nextBtn) {
+                nextBtn.style.display = 'block';
+            }
         }, 2500);
     }
-
-    function initMicrophone() {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            document.getElementById('to-scene-3').style.display = 'block';
-            return;
-        }
-
-        // Disable noise suppression so the browser doesn't filter out blowing noises!
-        navigator.mediaDevices.getUserMedia({ 
-            audio: { 
-                echoCancellation: false, 
-                noiseSuppression: false, 
-                autoGainControl: false 
-            } 
-        })
-        .then(stream => {
-            window.micStream = stream; // Store it so we can turn it off later
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            const audioContext = new AudioContext();
-            const analyser = audioContext.createAnalyser();
-            const microphone = audioContext.createMediaStreamSource(stream);
-            microphone.connect(analyser);
-            analyser.fftSize = 256;
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            
-            let blown = false;
-
-            function checkBlow() {
-                if (blown) return;
-                analyser.getByteFrequencyData(dataArray);
-                let sum = 0;
-                for(let i = 0; i < bufferLength; i++) {
-                    sum += dataArray[i];
-                }
-                let average = sum / bufferLength;
-                
-                // Lowered threshold significantly from 80 to 30
-                if (average > 30) { 
-                    blown = true;
-                    extinguishCandles();
-                } else {
-                    requestAnimationFrame(checkBlow);
-                }
-            }
-            checkBlow();
-        })
-        .catch(err => {
-            console.log("Mic access denied:", err);
-            document.getElementById('to-scene-3').style.display = 'block';
-        });
-    }
-
-    function extinguishCandles() {
-        if (window.micStream) {
-            window.micStream.getTracks().forEach(track => track.stop());
-            window.micStream = null;
-        }
-        
-        const flames = document.querySelectorAll('.flame');
-        flames.forEach(flame => flame.classList.add('extinguished'));
-        
-        setTimeout(() => {
+    // Bind the next button to transition to Scene 3
+    const toScene3Btn = document.getElementById('to-scene-3');
+    if (toScene3Btn) {
+        toScene3Btn.addEventListener('click', () => {
             transitionScene('scene-2', 'scene-3');
             initScene3();
-        }, 2000);
+        });
     }
-
-    document.getElementById('to-scene-3').addEventListener('click', () => {
-        transitionScene('scene-2', 'scene-3');
-        initScene3();
-    });
 
     // --- Scene 3: Spiral 2D Ribbon ---
     let s3Init = false;
